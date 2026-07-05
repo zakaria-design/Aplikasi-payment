@@ -1,0 +1,85 @@
+<div class="modal fade" id="providerModal" tabindex="-1" aria-labelledby="providerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" id="modalProviderTitle">Pembelian</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-4">
+                    <div class="col-md-7 border-end-md">
+                        <form id="formPembelian">
+                            <div class="mb-3 text-start">
+                                <label for="noHp" class="form-label small fw-semibold text-secondary">Nomor Handphone</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-phone"></i></span>
+                                    <input type="number" class="form-control border-start-0 shadow-none ps-1" id="noHp" placeholder="Contoh: 08123456xxx" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="jenisPembelian" class="form-label small fw-semibold text-secondary">Jenis Pembelian</label>
+                                <select class="form-select shadow-none" id="jenisPembelian" required>
+                                    <option value="" selected disabled>-- Pilih Jenis --</option>
+                                    <option value="pulsa">Pulsa</option>
+                                    <option value="paket">Paket Data</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="pilihanProduk" class="form-label small fw-semibold text-secondary">Pilih Produk</label>
+                                <select class="form-select shadow-none" id="pilihanProduk" required>
+                                    <option value="" selected disabled>-- Pilih Jenis Terlebih Dahulu --</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label for="metodePembayaran" class="form-label small fw-semibold text-secondary">Metode Pembayaran</label>
+                                <select class="form-select shadow-none" id="metodePembayaran" required>
+                                    <option value="" selected disabled>-- Pilih Metode Pembayaran --</option>
+                                    <option value="Virtual Account">Virtual Account</option>
+                                    <option value="QRIS">QRIS</option>
+                                    <option value="Kasir">Kasir (Alfamart/Indomaret)</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-5 d-flex flex-column justify-content-between bg-light rounded-3 p-3 text-start">
+                        <div>
+                            <span class="text-dark small fw-bold d-block mb-3 text-uppercase tracking-wider">Rincian Transaksi</span>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">No. HP:</span>
+                                <span class="text-dark small fw-semibold" id="detailNoHp">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Jenis:</span>
+                                <span class="text-dark small fw-semibold" id="detailJenis">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Provider:</span>
+                                <span class="text-dark small fw-semibold" id="detailProvider">-</span>
+                            </div>
+                            <hr class="my-2 border-secondary border-opacity-25">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-dark small fw-bold">Total Nominal:</span>
+                                <span class="fs-5 fw-bold text-primary" id="detailNominal">-</span>
+                            </div>
+                            <div id="wrapperInstruksi"></div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="button" id="btnBayar" class="btn btn-primary w-100 py-2 fw-bold rounded-3 shadow-sm" disabled>
+                                Selesaikan Pembayaran
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media (min-width: 768px) {
+    .border-end-md {
+        border-right: 1px solid #dee2e6 !important;
+        padding-right: 1.5rem;
+    }
+}
+</style>

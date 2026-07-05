@@ -1,0 +1,128 @@
+<div class="container-fluid py-2">
+    
+    <div class="row g-3 row-cols-2 row-cols-sm-3 row-cols-md-4 justify-content-center mb-5">
+        
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-pdam" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="PDAM">
+                <div class="icon-wrapper bg-info bg-opacity-10 text-info mx-auto mb-3">
+                    <i class="bi bi-droplet-fill fs-3"></i>
+                </div>
+                <h6 class="fw-bold mb-1">PDAM</h6>
+                <small class="text-muted text-xs">Air Bersih</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-pln" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="PLN">
+                <div class="icon-wrapper bg-warning bg-opacity-10 text-warning mx-auto mb-3">
+                    <i class="bi bi-lightning-charge-fill fs-3"></i>
+                </div>
+                <h6 class="fw-bold mb-1">Listrik PLN</h6>
+                <small class="text-muted text-xs">Tagihan & Token</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-wifi" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="Wifi">
+                <div class="icon-wrapper bg-primary bg-opacity-10 text-primary mx-auto mb-3">
+                    <i class="bi bi-router-fill fs-3"></i>
+                </div>
+                <h6 class="fw-bold mb-1">Internet & Wifi</h6>
+                <small class="text-muted text-xs">Indihome / Biznet</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-pendidikan" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="Pendidikan">
+                <div class="icon-wrapper bg-success bg-opacity-10 text-success mx-auto mb-3">
+                    <i class="bi bi-mortarboard-fill fs-3"></i>
+                </div>
+                <h6 class="fw-bold mb-1">Pendidikan</h6>
+                <small class="text-muted text-xs">Sekolah & Kuliah</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-akulaku" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="Akulaku">
+                <div class="icon-wrapper bg-danger bg-opacity-10 text-danger mx-auto mb-3">
+                    <i class="bi bi-credit-card-2-front-fill fs-3"></i>
+                </div>
+                <h6 class="fw-bold mb-1 text-danger">Akulaku</h6>
+                <small class="text-muted text-xs">Cicilan & Paylater</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-kredivo" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="Kredivo">
+                <div class="icon-wrapper bg-warning bg-opacity-10 text-dark mx-auto mb-3" style="background-color: #fff3cd !important;">
+                    <i class="bi bi-wallet-fill fs-3 text-warning"></i>
+                </div>
+                <h6 class="fw-bold mb-1" style="color: #f7941d;">Kredivo</h6>
+                <small class="text-muted text-xs">Kredit Instan</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-bpjs" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="BPJS">
+                <div class="icon-wrapper bg-success bg-opacity-10 text-success mx-auto mb-3">
+                    <i class="bi bi-heart-pulse-fill fs-3"></i>
+                </div>
+                <h6 class="fw-bold mb-1">BPJS</h6>
+                <small class="text-muted text-xs">Kesehatan Mandiri</small>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center p-3 btn-service btn-finance" 
+                 data-bs-toggle="modal" data-bs-target="#modalBayarTagihan" data-service="Multifinance">
+                <div class="icon-wrapper bg-secondary bg-opacity-10 text-dark mx-auto mb-3">
+                    <i class="bi bi-car-front-fill fs-3 text-secondary"></i>
+                </div>
+                <h6 class="fw-bold mb-1">Multifinance</h6>
+                <small class="text-muted text-xs">Adira / FIF / OTO</small>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center d-flex flex-column align-items-center justify-content-center mt-3">
+        <p class="text-muted text-xs mb-2">Atau bayar tagihan lebih cepat via kode QR</p>
+        <button class="btn btn-dark btn-sm px-4 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-2" id="btn-qr-scan">
+            <i class="bi bi-qr-code-scan fs-6"></i>
+            <span class="fw-bold" style="font-size: 0.85rem;">Bayar Pakai QRIS</span>
+        </button>
+    </div>
+</div>
+
+<style>
+    .btn-service { cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease; border: 1px solid transparent !important; }
+    .btn-service:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; border: 1px solid #0ea5e9 !important; }
+    .icon-wrapper { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 16px; }
+    .text-xs { font-size: 0.75rem; }
+    #btn-qr-scan { transition: all 0.3s ease; }
+    #btn-qr-scan:hover { background-color: #0ea5e9 !important; border-color: #0ea5e9 !important; transform: scale(1.03); }
+</style>
+
+<script>
+    document.getElementById('modalBayarTagihan').addEventListener('show.bs.modal', function (event) {
+        // Card yang memicu modal terbuka
+        const card = event.relatedTarget;
+        // Ambil nama layanan dari atribut data-service
+        const serviceName = card.getAttribute('data-service');
+        
+        // Update isi form di dalam modal
+        document.getElementById('modal-service-title').innerText = 'Pembayaran Tagihan ' + serviceName;
+        document.getElementById('tagihan-jenis').value = serviceName;
+    });
+
+    document.getElementById('btn-qr-scan').addEventListener('click', function() {
+        alert('Fitur Kamera QR Code Scanner Simulasi Berhasil Dibuka!');
+    });
+</script>

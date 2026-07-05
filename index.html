@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeky Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* Mengunci tinggi body agar pas selayar penuh dan mematikan scroll default */
+        body { overflow: hidden; background-color: #f8f9fa; height: 100vh; }
+        
+        /* --- SIDEBAR CORE LOGIC --- */
+        .sidebar { 
+            height: 100vh; /* Mengunci tinggi penuh perangkat */
+            width: 260px; 
+            background-color: #1e293b; 
+            transition: all 0.3s ease; 
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow-y: auto; /* Jaga-jaga jika menu sidebar melebihi layar bawah */
+        }
+        
+        .sidebar .nav-link { color: #94a3b8; padding: 12px 20px; display: flex; align-items: center; gap: 15px; border-radius: 8px; margin: 4px 15px; text-decoration: none; white-space: nowrap; }
+        .sidebar .nav-link:hover { background-color: #334155; color: #fff; }
+        .sidebar .nav-link.active { background-color: #0ea5e9; color: #fff; font-weight: 600; }
+        .sidebar .nav-link i { font-size: 1.2rem; min-width: 24px; text-align: center; }
+        
+        /* Area Konten Utama Kanan */
+        .content-area { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; min-width: 0; }
+        
+        /* Area tempat render komponen halaman dinamis (Hanya bagian ini yang bisa di-scroll) */
+        main { flex-grow: 1; overflow-y: auto; }
+        
+        footer { background-color: #ffffff; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
+
+        /* --- DESKTOP MINIMIZED MODE (>= 992px) --- */
+        @media (min-width: 992px) {
+            .sidebar.sidebar-minimized {
+                width: 78px;
+            }
+            .sidebar.sidebar-minimized .menu-text,
+            .sidebar.sidebar-minimized .logo-text {
+                display: none !important;
+            }
+            .sidebar.sidebar-minimized .nav-link {
+                margin: 4px 10px;
+                padding: 12px 0;
+                justify-content: center;
+                gap: 0;
+            }
+        }
+
+        /* --- MOBILE LAYOUT (< 992px) --- */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+            }
+            .sidebar.show {
+                left: 0;
+            }
+            .sidebar-overlay {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.4);
+                z-index: 1040;
+                display: none;
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* Opsional: mengubah kursor menjadi tangan saat hover */
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px); /* Menggeser card ke atas sejauh 5px */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important; /* Membuat bayangan lebih tebal saat terangkat */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="d-flex vh-100">
+        <aside class="sidebar text-white" id="sidebarContainer">
+            <div class="p-2 text-center border-bottom border-secondary d-flex justify-content-between align-items-center" style="height: 73px; flex-shrink: 0;">
+                <h4 class="fw-bold mb-0 text-info d-flex align-items-center justify-content-center w-100">
+                    <i class="bi bi-wallet2 me-2"></i>
+                    <span class="logo-text">Zeky Payment</span>
+                </h4>
+                <button type="button" class="btn text-white d-lg-none p-0" id="btnSidebarClose"><i class="bi bi-x-lg fs-4"></i></button>
+            </div>
+            <ul class="nav nav-pills flex-column mb-auto mt-3" id="sidebar-menu">
+                <li><a href="#" class="nav-link active" data-page="dashboard"><i class="bi bi-speedometer2"></i> <span class="menu-text">Dashboard</span></a></li>
+                <li><a href="#" class="nav-link" data-page="bayar-tagihan"><i class="bi bi-receipt"></i> <span class="menu-text">Bayar Tagihan</span></a></li>
+                <li><a href="#" class="nav-link" data-page="pulsa-listrik"><i class="bi bi-lightning-charge"></i> <span class="menu-text">Pulsa & Paket Data</span></a></li>
+                <li><a href="#" class="nav-link" data-page="riwayat"><i class="bi bi-clock-history"></i> <span class="menu-text">Riwayat Transaksi</span></a></li>
+                <li><a href="#" class="nav-link" data-page="profil"><i class="bi bi-person-circle"></i> <span class="menu-text">Profil</span></a></li>
+                <li><a href="#" class="nav-link" data-page="faq"><i class="bi bi-question-circle"></i> <span class="menu-text">Bantuan / FAQ</span></a></li>
+            </ul>
+        </aside>
+
+        <div class="content-area">
+            <header class="navbar navbar-expand navbar-light bg-white px-3 py-1 border-bottom" style="height: 53px; flex-shrink: 0;">
+                <button class="btn btn-outline-secondary me-3 d-lg-none" id="btnSidebarToggle">
+                    <i class="bi bi-list fs-4"></i>
+                </button>
+                
+                <button class="btn btn-outline-secondary btn-sm me-3 d-none d-lg-inline-flex align-items-center" id="btnDesktopToggle" style="height: 32px;">
+                    <i class="bi bi-arrow-left-right fs-6 lh-1"></i>
+                </button>
+
+                <span class="navbar-brand mb-0 h1 fs-5" id="page-title">Dashboard</span>
+                <div class="ms-auto d-flex align-items-center gap-3">
+                    <span class="badge bg-light text-dark border p-2">
+                        <i class="bi bi-wallet2 text-success me-1"></i> <span class="d-none d-sm-inline">Saldo:</span> <b id="global-saldo">Rp 0</b>
+                    </span>
+                </div>
+            </header>
+
+            <main class="p-4" id="main-content">
+                <div class="text-center py-5">Memuat halaman...</div>
+            </main>
+
+            <footer class="text-center py-2 text-[7px]">
+                <small>&copy; 2026 Zeky Payment. All Rights Reserved. powered with ❤️ by zakaria</small>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalQrScanner" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow text-dark">
+                <div class="modal-header border-0 bg-info">
+                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-qr-code-scan me-2 text-white"></i>Pindai QRIS Finansial</h5>
+                    <button type="button" class="btn-close btn-close-white" id="btn-close-scanner" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 bg-light text-center">
+                    <div id="qr-reader" class="mx-auto rounded-3 overflow-hidden shadow-sm" style="width: 100%; max-width: 400px; background: #000;"></div>
+                    <p class="text-muted small mt-2 mb-0"><i class="bi bi-info-circle me-1"></i>Posisikan kode QRIS Anda tepat di dalam kotak kamera.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/app.js"></script>
+    <script src="JS/data_dummy.js"></script>
+    <script src="JS/dashboard.js"></script>
+
+  
+    <script>
+        const sidebar = document.getElementById('sidebarContainer');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtnMobile = document.getElementById('btnSidebarToggle');
+        const closeBtnMobile = document.getElementById('btnSidebarClose');
+        const toggleBtnDesktop = document.getElementById('btnDesktopToggle');
+
+        function toggleSidebarMobile() {
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtnMobile.addEventListener('click', toggleSidebarMobile);
+        closeBtnMobile.addEventListener('click', toggleSidebarMobile);
+        overlay.addEventListener('click', toggleSidebarMobile);
+
+        toggleBtnDesktop.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-minimized');
+        });
+
+        document.querySelectorAll('#sidebar-menu .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 992) {
+                    toggleSidebarMobile();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        
+    </script>
+
+    <script>
+        // Letakkan fungsi ini di scope paling luar index.html (Global Scope)
+        function openProviderModal(providerName) {
+            // Membuka file modal terpisah secara dinamis
+            fetch('modal/modal-telkomsel.html')
+                .then(response => response.text())
+                .then(html => {
+                    const container = document.getElementById('modalContainer');
+                    if (!container) return;
+                    
+                    container.innerHTML = html;
+
+                    // Set Judul Pembelian sesuai provider yang ditekan
+                    document.getElementById('modalProviderTitle').innerText = `Pembelian Pulsa & Paket Data - ${providerName}`;
+
+                    // Inisialisasi & Tampilkan Modal Bootstrap
+                    const providerModalEl = document.getElementById('providerModal');
+                    const modalInstance = new bootstrap.Modal(providerModalEl);
+                    modalInstance.show();
+
+                    // Jalankan seluruh logika internal form modal
+                    initModalLogic(providerName, modalInstance);
+                })
+                .catch(err => {
+                    console.error('Gagal memuat modal. Pastikan Anda menjalankan aplikasi menggunakan Local Server (XAMPP/Live Server)', err);
+                });
+        }
+
+            function initModalLogic(provider, modalInstance) {
+                const inputNoHp = document.getElementById('noHp');
+                const selectJenis = document.getElementById('jenisPembelian');
+                const selectProduk = document.getElementById('pilihanProduk');
+                const selectMetode = document.getElementById('metodePembayaran');
+                const wrapperInstruksi = document.getElementById('wrapperInstruksi');
+                const btnBayar = document.getElementById('btnBayar');
+
+                const detailNoHp = document.getElementById('detailNoHp');
+                const detailJenis = document.getElementById('detailJenis');
+                const detailProvider = document.getElementById('detailProvider');
+                const detailNominal = document.getElementById('detailNominal');
+
+                // Data Dummy Paket Data Multi-Provider otomatis berubah sesuai parameter card
+                const dummyPaketData = {
+                    'Telkomsel': [
+                        { text: 'Internet OMG! 4.5 GB - Rp 35.000', value: 35000 },
+                        { text: 'Combo Sakti 25 GB - Rp 110.000', value: 110000 }
+                    ],
+                    'XL Axiata': [
+                        { text: 'Xtra Combo Flex M 10GB - Rp 40.000', value: 40000 },
+                        { text: 'Xtra Combo VIP Plus 30GB - Rp 85.000', value: 85000 }
+                    ],
+                    'Indosat': [
+                        { text: 'Freedom Internet 12GB - Rp 50.000', value: 50000 },
+                        { text: 'Freedom U 30GB + Apps - Rp 100.000', value: 100000 }
+                    ],
+                    'Tri': [
+                        { text: 'Happy 15GB 30 Hari - Rp 35.000', value: 35000 },
+                        { text: 'AlwaysOn 50GB Ultra - Rp 90.000', value: 90000 }
+                    ],
+                    'Smartfren': [
+                        { text: 'Unlimited Harian 1GB/Hari - Rp 60.000', value: 60000 },
+                        { text: 'Kuota Besar 100GB - Rp 120.000', value: 120000 }
+                    ],
+                    'Axis': [
+                        { text: 'Bronet 24 Jam 8GB - Rp 30.000', value: 30000 },
+                        { text: 'Warnet Unlimited 24 Jam - Rp 5.000', value: 5000 }
+                    ]
+                };
+
+                const pulsaOptions = [
+                    { text: 'Pulsa 5.000', value: 5000 },
+                    { text: 'Pulsa 10.000', value: 10000 },
+                    { text: 'Pulsa 15.000', value: 15000 },
+                    { text: 'Pulsa 20.000', value: 20000 },
+                    { text: 'Pulsa 50.000', value: 50000 },
+                    { text: 'Pulsa 100.000', value: 100000 },
+                    { text: 'Pulsa 200.000', value: 200000 }
+                ];
+
+                function updateRincian() {
+                    detailNoHp.innerText = inputNoHp.value || '-';
+                    detailJenis.innerText = selectJenis.value === 'pulsa' ? 'Pulsa' : (selectJenis.value === 'paket' ? 'Paket Data' : '-');
+                    detailProvider.innerText = provider;
+                    
+                    const selectedOption = selectProduk.options[selectProduk.selectedIndex];
+                    if (selectedOption && selectedOption.value) {
+                        const nominalValue = parseInt(selectedOption.value);
+                        detailNominal.innerText = 'Rp ' + nominalValue.toLocaleString('id-ID');
+                        btnBayar.disabled = false;
+                    } else {
+                        detailNominal.innerText = '-';
+                        btnBayar.disabled = true;
+                    }
+                }
+
+                inputNoHp.addEventListener('input', updateRincian);
+
+                selectJenis.addEventListener('change', function() {
+                    selectProduk.innerHTML = '<option value="" selected disabled>-- Pilih Nominal / Paket --</option>';
+                    const jenis = this.value;
+
+                    let optionsToAppend = [];
+                    if (jenis === 'pulsa') {
+                        optionsToAppend = pulsaOptions;
+                    } else if (jenis === 'paket') {
+                        optionsToAppend = dummyPaketData[provider] || [];
+                    }
+
+                    optionsToAppend.forEach(opt => {
+                        const el = document.createElement('option');
+                        el.value = opt.value;
+                        el.text = opt.text;
+                        selectProduk.appendChild(el);
+                    });
+                    updateRincian();
+                });
+
+                selectProduk.addEventListener('change', updateRincian);
+
+                selectMetode.addEventListener('change', function() {
+                    const metode = this.value;
+                    let htmlContent = '';
+
+                    if (metode === 'Virtual Account') {
+                        const randomVA = '88012' + Math.floor(10000000 + Math.random() * 90000000);
+                        htmlContent = `
+                            <div class="p-3 bg-light rounded border border-info border-opacity-25 mt-3 text-start">
+                                <small class="text-muted d-block mb-1 fw-medium">Nomor Virtual Account</small>
+                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <span class="fs-5 fw-bold text-info tracking-wide d-block">${randomVA}</span>
+                                    <button type="button" class="btn btn-sm btn-outline-info py-0 px-2 rounded-2" onclick="navigator.clipboard.writeText('${randomVA}'); alert('Nomor VA berhasil disalin!');">
+                                        <small>Salin</small>
+                                    </button>
+                                </div>
+                                <small class="text-xs text-muted d-block mb-3"><i class="bi bi-info-circle me-1"></i>Salin nomor di atas untuk transfer bank.</small>
+                                <div class="border-top pt-2 mt-2">
+                                    <span class="text-dark small fw-semibold d-block mb-2">Petunjuk Pembayaran:</span>
+                                    <div class="accordion accordion-flush" id="petunjukVA">
+                                        <div class="accordion-item bg-transparent border-bottom-0">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed p-2 small text-secondary bg-transparent shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#stepMbanking">
+                                                    <small><i class="bi bi-phone me-2 text-info"></i>Via Mobile Banking (m-Banking)</small>
+                                                </button>
+                                            </h2>
+                                            <div id="stepMbanking" class="accordion-collapse collapse" data-bs-parent="#petunjukVA">
+                                                <div class="accordion-body p-2 pt-0 text-muted" style="font-size: 0.8rem;">
+                                                    1. Buka aplikasi m-Banking Anda.<br>
+                                                    2. Pilih menu <strong>Transfer</strong> > <strong>Virtual Account</strong>.<br>
+                                                    3. Masukkan atau tempel nomor VA di atas.<br>
+                                                    4. Periksa data tagihan, masukkan PIN Anda, lalu konfirmasi.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    } else if (metode === 'QRIS') {
+                        htmlContent = `
+                            <div class="text-center p-3 bg-light rounded border border-secondary border-opacity-25 mt-3">
+                                <small class="text-muted d-block mb-2 fw-medium">Pindai Kode QRIS</small>
+                                <div class="d-inline-block mb-2">
+                                    <i class="bi bi-qr-code text-dark" style="font-size: 4.5rem;"></i>
+                                </div>
+                                <small class="text-xs text-muted d-block">Mendukung GoPay, OVO, Dana, LinkAja, & M-Banking</small>
+                            </div>`;
+                    } else if (metode === 'Kasir') {
+                        const randomKodeKasir = 'TRX-' + Math.floor(100000 + Math.random() * 900000);
+                        htmlContent = `
+                            <div class="p-3 bg-light rounded border border-warning border-opacity-25 mt-3 text-start">
+                                <small class="text-muted d-block mb-1 fw-medium">Lokasi Gerai Kasir</small>
+                                <span class="fw-bold text-dark d-block mb-2">Alfamart / Indomaret Terdekat</span>
+                                <small class="text-muted d-block mb-1 fw-medium">Kode Pembayaran</small>
+                                <span class="fs-5 fw-bold text-warning tracking-wide d-block">${randomKodeKasir}</span>
+                            </div>`;
+                    }
+                    wrapperInstruksi.innerHTML = htmlContent;
+                });
+
+                function cleanModalBackdrop() {
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) backdrop.remove();
+                    document.body.classList.remove('modal-open');
+                    document.body.style.paddingRight = '';
+                }
+
+                btnBayar.addEventListener('click', function() {
+                    const nominal = parseInt(selectProduk.value) || 0;
+                    const kontrak = inputNoHp.value;
+                    const metode = selectMetode.value;
+
+                    Swal.fire({
+                        title: 'Memproses pembayaran..',
+                        html: `<span class="text-secondary" style="font-size: 0.85rem;">Sedang memproses pembayaran ${provider}, harap tunggu...</span>`,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        padding: '2rem',
+                        customClass: { popup: 'rounded-4 shadow border-0', title: 'fw-bold fs-5 text-dark mb-2' },
+                        didOpen: () => { Swal.showLoading(); }
+                    });
+
+                    setTimeout(() => {
+                        modalInstance.hide();
+                        cleanModalBackdrop();
+
+                        if (typeof addTransaction === "function") {
+                            addTransaction({
+                                date: new Date().toLocaleString('id-ID'),
+                                id: 'FIN' + Date.now().toString().slice(-5),
+                                service: provider,
+                                target: kontrak,
+                                amount: nominal,
+                                type: 'debit',
+                                status: 'Sukses'
+                            });
+                        }
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembelian Sukses',
+                            html: `<div class="text-secondary mb-1" style="font-size: 0.85rem;">Pembelian pada  <b>${provider}</b> senilai <b>Rp ${nominal.toLocaleString('id-ID')}</b> via <b>${metode}</b> berhasil diproses.</div>`,
+                            confirmButtonColor: '#ffc107',
+                            confirmButtonText: '<span class="text-dark fw-bold">Selesai</span>',
+                            padding: '2rem',
+                            customClass: { popup: 'rounded-4 shadow border-0', title: 'fw-bold fs-5 text-dark mt-2', confirmButton: 'btn btn-warning rounded-3 px-4 py-2' }
+                        }).then((result) => {
+                            if (result.isConfirmed && typeof loadPage === "function") loadPage('pulsa-listrik');
+                        });
+                    }, 2000);
+                });
+            }
+    </script>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalScannerElement = document.getElementById('modalQrScanner');
+            let html5QrcodeScanner = null;
+            let qrModalInstance = null;
+
+            if (modalScannerElement) {
+                qrModalInstance = new bootstrap.Modal(modalScannerElement);
+            }
+
+            // MENGGUNAKAN DELEGASI GLOBAL: Menangkap klik tombol QRIS meski baru di-load via AJAX/app.js
+            document.addEventListener('click', function (e) {
+                const btnQrScan = e.target.closest('#btn-qr-scan');
+                if (btnQrScan) {
+                    if (qrModalInstance) qrModalInstance.show();
+                }
+            });
+
+            // Kamera dinyalakan setelah modal selesai beranimasi muncul
+            if (modalScannerElement) {
+                modalScannerElement.addEventListener('shown.bs.modal', function () {
+                    setTimeout(() => {
+                        try {
+                            if (!html5QrcodeScanner) {
+                                html5QrcodeScanner = new Html5Qrcode("qr-reader");
+                            }
+
+                            if (html5QrcodeScanner.isScanning) {
+                                html5QrcodeScanner.stop().then(() => startScanning());
+                            } else {
+                                startScanning();
+                            }
+                        } catch (error) {
+                            console.error("Gagal inisialisasi library scanner:", error);
+                        }
+                    }, 200); // Jeda micro agar layouting div #qr-reader stabil
+                });
+
+                // Mematikan aliran kamera saat modal ditutup
+                modalScannerElement.addEventListener('hidden.bs.modal', function () {
+                    stopCamera();
+                });
+            }
+
+            function startScanning() {
+                html5QrcodeScanner.start(
+                    { facingMode: "environment" }, 
+                    { fps: 15, qrbox: { width: 250, height: 250 } }, 
+                    onScanSuccess, 
+                    onScanFailure
+                ).catch(err => {
+                    console.error("Kamera diblokir atau absen:", err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kamera Tidak Terbuka',
+                        text: 'Akses ditolak. Pastikan menggunakan tautan localhost/HTTPS dan beri izin kamera di browser.',
+                        confirmButtonColor: '#ef4444'
+                    });
+                    if (qrModalInstance) qrModalInstance.hide();
+                });
+            }
+
+            function stopCamera() {
+                if (html5QrcodeScanner && html5QrcodeScanner.isScanning) {
+                    html5QrcodeScanner.stop().catch(err => console.error("Gagal matikan kamera:", err));
+                }
+            }
+
+            function onScanSuccess(decodedText, decodedResult) {
+                stopCamera();
+
+                Swal.fire({
+                    title: 'Mendekripsi QRIS',
+                    html: '<span class="text-secondary" style="font-size: 0.85rem;">Menganalisis payload data enkripsi kode QRIS...</span>',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+
+                setTimeout(() => {
+                    if (qrModalInstance) qrModalInstance.hide();
+                    
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true
+                    });
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'QRIS Berhasil Dibaca',
+                        html: `<div class="text-secondary" style="font-size: 0.825rem; text-align: left;">Payload: <code class="text-dark fw-bold">${decodedText.substring(0, 30)}...</code></div>`
+                    });
+
+                    if (typeof loadPage === "function") {
+                        setTimeout(() => loadPage('bayar-tagihan'), 1500);
+                    }
+                }, 1500);
+            }
+
+            function onScanFailure(error) {
+                // Diabaikan demi kestabilan frame rate render video
+            }
+        });
+    </script>
+</body>
+</html>

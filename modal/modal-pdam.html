@@ -1,0 +1,62 @@
+<div class="modal fade" id="modalPdam" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-info bg-opacity-10">
+                <h5 class="modal-title fw-bold "><i class="bi bi-droplet-fill me-2 text-info"></i>Pembayaran PDAM</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-pdam">
+                <div class="modal-body p-4">
+                    <div class="row g-4 mobile-responsive-text">
+                        
+                        <div class="col-12 col-md-6 border-end-md">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Wilayah / Kota PDAM</label>
+                                <select class="form-select" id="pdam-wilayah" required>
+                                    <option value="" disabled selected>Pilih Kota/Kabupaten...</option>
+                                    <option value="PDAM Kota Jakarta">PDAM PAM JAYA (Jakarta)</option>
+                                    <option value="PDAM Kota Bandung">PDAM Tirtawening (Kota Bandung)</option>
+                                    <option value="PDAM Kota Surabaya">PDAM Surya Sembada (Surabaya)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nomor Pelanggan (ID PAM)</label>
+                                <input type="number" class="form-control p-2.5" id="pdam-nopel" placeholder="Ketik nomor pelanggan dan tekan enter/tab" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Metode Pembayaran</label>
+                                <select class="form-select" id="pdam-metode" required disabled>
+                                    <option value="" disabled selected>Pilih Metode Pembayaran...</option>
+                                    <option value="Virtual Account">Virtual Account</option>
+                                    <option value="QRIS">QRIS / QR Code</option>
+                                    <option value="Kasir">Bayar di Kasir (Alfamart/Indomaret)</option>
+                                </select>
+                            </div>
+                            
+                            <input type="hidden" id="pdam-nominal">
+                        </div>
+                        
+                        <div class="col-12 col-md-6 d-flex flex-column justify-content-between bg-light bg-opacity-50 rounded p-3">
+                            <div>
+                                <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-receipt me-2"></i>Detail Pembayaran</h6>
+                                
+                                <div id="pdam-detail-tagihan" class="mb-3 d-none"></div>
+                            </div>
+                            
+                            <div id="pdam-instruksi-wrapper" class="mt-2 text-center">
+                                <p class="text-muted small m-0">Silakan isi data di sebelah kiri untuk melihat detail tagihan dan kode QR.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-info rounded-3 px-4 fw-bold" id="pdam-btn-submit" disabled>Konfirmasi Selesai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

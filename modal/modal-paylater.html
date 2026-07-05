@@ -1,0 +1,66 @@
+<div class="modal fade" id="modalPaylater" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-dark bg-opacity-10 text-dark">
+                <h5 class="modal-title fw-bold" id="paylater-modal-title"><i class="bi bi-credit-card-2-front-fill me-2"></i>Pembayaran Fintek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-paylater">
+                <div class="modal-body p-4">
+                    <div class="row g-4 mobile-responsive-text">
+                        
+                        <div class="col-12 col-md-6 border-end-md">
+                            
+                            <div class="alert alert-success py-2 px-3 border-0 d-flex align-items-center mb-3" style="border-radius: 10px;">
+                                <i class="bi bi-shield-check-fill text-success fs-5 me-2"></i>
+                                <small class="fw-medium text-success" id="paylater-status-text">Menghubungkan akun...</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Pilih Jenis Tagihan</label>
+                                <select class="form-select" id="paylater-jenis-tagihan" required>
+                                    <option value="" disabled selected>Pilih tagihan...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nominal Tagihan (Otomatis)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-end-0 bg-light text-secondary fw-semibold">Rp</span>
+                                    <input type="text" class="form-control p-2.5 bg-light fw-bold text-dark border-start-0" id="paylater-nominal-view" readonly placeholder="0">
+                                </div>
+                                <input type="hidden" id="paylater-nominal-raw">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Metode Pembayaran</label>
+                                <select class="form-select" id="paylater-metode" required disabled>
+                                    <option value="" disabled selected>Pilih Metode Pembayaran...</option>
+                                    <option value="Virtual Account">Virtual Account</option>
+                                    <option value="QRIS">QRIS / QR Code</option>
+                                    <option value="Kasir">Bayar di Kasir (Alfamart/Indomaret)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-md-6 d-flex flex-column justify-content-between bg-light bg-opacity-50 rounded p-3">
+                            <div>
+                                <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-receipt me-2"></i>Detail Lembar Tagihan</h6>
+                                <div id="paylater-detail-invoice" class="mb-3 d-none"></div>
+                            </div>
+                            
+                            <div id="paylater-instruksi-wrapper" class="mt-2 text-center">
+                                <p class="text-muted small m-0">Silakan pilih jenis tagihan Anda untuk melihat rincian tanggal jatuh tempo.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-dark rounded-3 px-4 fw-bold" id="paylater-btn-submit" disabled>Konfirmasi Selesai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

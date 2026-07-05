@@ -1,0 +1,32 @@
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h5 class="fw-bold mb-4 text-primary"><i class="bi bi-phone-vibrate me-2"></i>Top Up E-Wallet & E-Toll</h5>
+        <form id="form-topup">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Pilih Dompet Digital / E-Toll</label>
+                    <select class="form-select" id="topup-jenis" required>
+                        <option value="" disabled selected>Pilih Dompet...</option>
+                        <option value="DANA">DANA</option>
+                        <option value="OVO">OVO</option>
+                        <option value="E-Toll">Mandiri / BRI E-Toll</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Nomor Handphone / Nomor Kartu</label>
+                    <input type="number" class="form-control" id="topup-tujuan" placeholder="08xxxx atau No Kartu" required>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Pilih Nominal</label>
+                    <div class="row g-2">
+                        <div class="col-6 col-md-3"><input type="radio" class="btn-check" name="topup-nom" id="nom1" value="20000" required><label class="btn btn-outline-secondary w-100" for="nom1">20.000</label></div>
+                        <div class="col-6 col-md-3"><input type="radio" class="btn-check" name="topup-nom" id="nom2" value="50000"><label class="btn btn-outline-secondary w-100" for="nom2">50.000</label></div>
+                        <div class="col-6 col-md-3"><input type="radio" class="btn-check" name="topup-nom" id="nom3" value="100000"><label class="btn btn-outline-secondary w-100" for="nom3">100.000</label></div>
+                        <div class="col-6 col-md-3"><input type="radio" class="btn-check" name="topup-nom" id="nom4" value="200000"><label class="btn btn-outline-secondary w-100" for="nom4">200.000</label></div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100 py-2 fw-bold mt-4">Proses Top Up</button>
+        </form>
+    </div>
+</div>

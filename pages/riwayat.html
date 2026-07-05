@@ -1,0 +1,61 @@
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h6 class="fw-bold text-dark mb-1"><i class="bi bi-clock-history me-2 text-primary"></i>Semua Riwayat Transaksi</h6>
+                <small class="text-muted text-xs">Daftar mutasi pengeluaran dan pembelian token/pulsa Anda</small>
+            </div>
+            <button class="btn btn-sm btn-light-danger fw-semibold px-3 rounded-3 text-xs" id="btn-clear-history">
+                <i class="bi bi-trash3 me-1"></i>Bersihkan Semua
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 text-secondary" style="font-size: 0.825rem;">
+                <thead class="table-light text-dark fw-semibold" style="font-size: 0.75rem; uppercase; tracking-wider: 0.05em;">
+                    <tr>
+                        <th class="py-3 ps-3">Waktu Transaksi</th>
+                        <th class="py-3">ID Transaksi</th>
+                        <th class="py-3">Jenis Layanan</th>
+                        <th class="py-3">Nomor Tujuan / ID</th>
+                        <th class="py-3">Nominal (Rp)</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3 text-end pe-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="riwayat-table-body" class="border-top-0">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-xs { font-size: 0.75rem !important; }
+    
+    .btn-light-danger {
+        background-color: #fff5f5;
+        color: #dc3545;
+        border: 1px solid #fee2e2;
+        transition: all 0.2s ease;
+    }
+    .btn-light-danger:hover {
+        background-color: #dc3545;
+        color: #ffffff;
+        border-color: #dc3545;
+    }
+    
+    .badge-success-light {
+        background-color: #e6fcf5;
+        color: #0ca678;
+        padding: 0.35em 0.65em;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    
+    /* Menghilangkan border tebal default bootstrap agar lebih clean */
+    .table>:not(caption)>*>* {
+        border-bottom-width: 1px;
+        border-bottom-color: #f1f3f5;
+    }
+</style>

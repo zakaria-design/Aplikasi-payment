@@ -1,0 +1,61 @@
+<div class="modal fade" id="modalWifi" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-primary bg-opacity-10 ">
+                <h5 class="modal-title fw-bold"><i class="bi bi-wifi me-2 text-primary"></i>Internet & Wi-Fi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-wifi">
+                <div class="modal-body p-4">
+                    <div class="row g-4 mobile-responsive-text">
+                        
+                        <div class="col-12 col-md-6 border-end-md">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Jenis Layanan / Provider</label>
+                                <select class="form-select" id="wifi-provider" required>
+                                    <option value="" disabled selected>Pilih Provider Internet...</option>
+                                    <option value="Biznet Home">Biznet Home</option>
+                                    <option value="IndiHome">IndiHome / Telkom</option>
+                                    <option value="MyRepublic">MyRepublic</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">ID Pelanggan (Customer ID)</label>
+                                <input type="number" class="form-control p-2.5" id="wifi-nopel" placeholder="Ketik nomor pelanggan internet" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Metode Pembayaran</label>
+                                <select class="form-select" id="wifi-metode" required disabled>
+                                    <option value="" disabled selected>Pilih Metode Pembayaran...</option>
+                                    <option value="Virtual Account">Virtual Account</option>
+                                    <option value="QRIS">QRIS / QR Code</option>
+                                    <option value="Kasir">Bayar di Kasir (Alfamart/Indomaret)</option>
+                                </select>
+                            </div>
+                            
+                            <input type="hidden" id="wifi-nominal">
+                        </div>
+                        
+                        <div class="col-12 col-md-6 d-flex flex-column justify-content-between bg-light bg-opacity-50 rounded p-3">
+                            <div>
+                                <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-receipt me-2"></i>Detail Pembayaran</h6>
+                                <div id="wifi-detail-tagihan" class="mb-3 d-none"></div>
+                            </div>
+                            
+                            <div id="wifi-instruksi-wrapper" class="mt-2 text-center">
+                                <p class="text-muted small m-0">Silakan isi data di sebelah kiri untuk melihat detail tagihan dan kode pembayaran.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary rounded-3 px-4 fw-bold" id="wifi-btn-submit" disabled>Konfirmasi Selesai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

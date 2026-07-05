@@ -1,0 +1,61 @@
+<div class="modal fade" id="modalBpjs" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-primary bg-opacity-10 text-primary">
+                <h5 class="modal-title fw-bold"><i class="bi bi-heart-pulse-fill me-2"></i>BPJS Kesehatan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-bpjs">
+                <div class="modal-body p-4">
+                    <div class="row g-4 mobile-responsive-text">
+                        
+                        <!-- Kolom Kiri: Input Data -->
+                        <div class="col-12 col-md-6 border-end-md">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Jenis Layanan</label>
+                                <select class="form-select bg-light" id="bpjs-jenis" required readonly>
+                                    <option value="BPJS Kesehatan" selected>BPJS Kesehatan / KIS</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nomor Virtual Account / Peserta</label>
+                                <input type="number" class="form-control p-2.5" id="bpjs-nopes" placeholder="Ketik 13 digit nomor BPJS" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Metode Pembayaran</label>
+                                <select class="form-select" id="bpjs-metode" required disabled>
+                                    <option value="" disabled selected>Pilih Metode Pembayaran...</option>
+                                    <option value="Virtual Account">Virtual Account</option>
+                                    <option value="QRIS">QRIS / QR Code</option>
+                                    <option value="Kasir">Bayar di Kasir (Alfamart/Indomaret)</option>
+                                </select>
+                            </div>
+                            
+                            <input type="hidden" id="bpjs-nominal-raw">
+                        </div>
+                        
+                        <!-- Kolom Kanan: Rincian Invoice Lembar Kerja -->
+                        <div class="col-12 col-md-6 d-flex flex-column justify-content-between bg-light bg-opacity-50 rounded p-3">
+                            <div>
+                                <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-receipt me-2"></i>Informasi Tagihan JKN</h6>
+                                <div id="bpjs-detail-invoice" class="mb-3 d-none"></div>
+                            </div>
+                            
+                            <!-- Tempat Kode Pembayaran / Instruksi di Kanan Bawah -->
+                            <div id="bpjs-instruksi-wrapper" class="mt-2 text-center">
+                                <p class="text-muted small m-0">Silakan isi nomor peserta di sebelah kiri untuk memeriksa total tunggakan premi.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary rounded-3 px-4 fw-bold" id="bpjs-btn-submit" disabled>Konfirmasi Selesai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

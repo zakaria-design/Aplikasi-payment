@@ -1,0 +1,60 @@
+<div class="modal fade" id="modalPln" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-warning bg-opacity-10 text-warning-dark">
+                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Pembayaran PLN</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-pln">
+                <div class="modal-body p-4">
+                    <div class="row g-4 mobile-responsive-text">
+                        
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Jenis Layanan</label>
+                                <select class="form-select" id="pln-jenis" required>
+                                    <option value="" disabled selected>Pilih Jenis Layanan...</option>
+                                    <option value="PLN Postpaid">Listrik Pascabayar</option>
+                                    <option value="PLN Prepaid">Token Listrik (Prabayar)</option>
+                                    <option value="PLN Non Taglis">PLN Non Taglis</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nomor Meter / ID Pelanggan</label>
+                                <input type="number" class="form-control p-2.5" id="pln-nopel" placeholder="Ketik nomor pelanggan dan tekan enter/tab" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Metode Pembayaran</label>
+                                <select class="form-select" id="pln-metode" required disabled>
+                                    <option value="" disabled selected>Pilih Metode Pembayaran...</option>
+                                    <option value="Virtual Account">Virtual Account</option>
+                                    <option value="QRIS">QRIS / QR Code</option>
+                                    <option value="Kasir">Bayar di Kasir (Alfamart/Indomaret)</option>
+                                </select>
+                            </div>
+                            
+                            <input type="hidden" id="pln-nominal">
+                        </div>
+                        
+                        <div class="col-12 col-md-6 bg-light bg-opacity-50 rounded p-3">
+                            <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-receipt me-2"></i>Detail Pembayaran</h6>
+                            
+                            <div id="pln-detail-tagihan" class="mb-3 d-none"></div>
+                            
+                            <div id="pln-instruksi-wrapper" class="mt-3 text-center">
+                                <p class="text-muted small">Silakan isi data di sebelah kiri untuk melihat detail tagihan dan kode QR.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning text-dark rounded-3 px-4 fw-bold" id="pln-btn-submit" disabled>Konfirmasi Selesai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
