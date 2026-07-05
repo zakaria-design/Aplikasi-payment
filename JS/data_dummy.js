@@ -92,7 +92,7 @@
     if (!localStorage.getItem('data_pendidikan')) {
         const dummyPendidikan = [
             {
-                nim: "1234567890222",
+                nim: "221011450283",
                 institusi: "Universitas Pamulang",
                 nama: "Zakaria",
                 periode: "SPP Semester Ganjil 2025/2026",
