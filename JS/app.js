@@ -9,11 +9,7 @@ if (localStorage.getItem(STORAGE_KEY_TRX) === null) localStorage.setItem(STORAGE
 
 // Default data profil (berupa Objek/JSON)
 const defaultProfile = {
-    nama: 'Zakaria',
-    email: 'zakaria@example.com',
-    nohp: '081234567890',
-    tgllahir: '2000-01-01',
-    alamat: 'Jl. Tech IoT No. 123, Indonesia'
+    nama: 'Zakaria'
 };
 
 if (localStorage.getItem(STORAGE_KEY_PROFILE) === null) {
